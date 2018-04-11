@@ -3,10 +3,9 @@ package com.finastra;
 public class Main {
 
 	public static void main(String[] args) {
-		Model model = new Model();
-		View view = new View();
+		TableModel model = new TableModel();
+		View view = new View(model);
 		Controller c = new Controller(model, view);
 		c.initController();
 	}
-
 }

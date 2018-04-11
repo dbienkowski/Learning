@@ -1,76 +1,97 @@
 package com.finastra;
 
-import java.awt.Dimension;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
 
 public class View {
 	
 	private JTextField senderTextField;
-//	private JTextField receiverTextField;
-//	private JTextField trnTextField;
-//	private JTextField messageTypeTextField;
-//	private JTextField murTextField;
+	private JTextField receiverTextField;
+	private JTextField trnTextField;
+	private JTextField messageTypeTextField;
+	private JTextField murTextField;
 	
 	private JLabel senderLabel;
+	private JLabel receiverLabel;
+	private JLabel trnLabel;
+	private JLabel murLabel;
+	private JLabel messageTypeLabel;
 	private JButton searchButton;
 	private JButton openFileButton;
+	
 	private JTable table;
 	private JScrollPane tableScrollPane;
-	
-	public View() {
-		// Create views swing UI components 
-		senderTextField = new JTextField(26);
-//		receiverTextField = new JTextField(26);
-//		trnTextField = new JTextField(26);
-//		messageTypeTextField = new JTextField(26);
-//		murTextField = new JTextField(26);
+	private JFrame frame;
 		
-		//senderLabel = new JLabel("Sender:");
+	public View(TableModel tableModel) {
+		
+		// Create views swing UI components 
+		senderTextField = new JTextField(11);
+		receiverTextField = new JTextField(11);
+		trnTextField = new JTextField(11);
+		messageTypeTextField = new JTextField(6);
+		murTextField = new JTextField(11);
+		
+		senderLabel = new JLabel("Sender:");
+		receiverLabel = new JLabel("Receiver:");
+		trnLabel = new JLabel("TRN:");
+		murLabel = new JLabel("MUR:");
+		messageTypeLabel = new JLabel("Type:");
+		
 		searchButton = new JButton("Search");
 		openFileButton = new JButton("Open file");
-		table = new JTable(new DefaultTableModel());
-
-		// Create table model
-		//Model model = new Model();
-		table.setModel(new DefaultTableModel(null, new Object[]{"Sender", "Type", "Receiver", "MUR", "TRN"}));
+		
+		// Create table 
+        table = new JTable(tableModel);
+        table.setAutoCreateRowSorter(true);
 
 		// Set the view layout
-		JPanel ctrlPane = new JPanel();
-		//ctrlPane.add(senderLabel);
-		ctrlPane.add(senderTextField);
-		ctrlPane.add(searchButton);
-		ctrlPane.add(openFileButton);
+        JPanel searchPanel = new JPanel();
+        searchPanel.add(senderLabel);
+        searchPanel.add(senderTextField);
+        searchPanel.add(messageTypeLabel);
+        searchPanel.add(messageTypeTextField);
+        searchPanel.add(receiverLabel);
+        searchPanel.add(receiverTextField);
+        searchPanel.add(murLabel);
+        searchPanel.add(murTextField);
+        searchPanel.add(trnLabel);
+        searchPanel.add(trnTextField);
+        searchPanel.add(searchButton);
+        searchPanel.add(openFileButton);
 		
 
 		tableScrollPane = new JScrollPane(table);
-		tableScrollPane.setPreferredSize(new Dimension(700, 182));
 		tableScrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Messages",
 				TitledBorder.CENTER, TitledBorder.TOP));
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, ctrlPane, tableScrollPane);
-		splitPane.setDividerLocation(35);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, searchPanel, tableScrollPane);
+		splitPane.setDividerLocation(65);
+		
 		splitPane.setEnabled(false);
 
 		// Display it all in a scrolling window and make the window appear
-		JFrame frame = new JFrame("SWIFT FIN messages");
+		frame = new JFrame("SWIFT FIN messages");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(500, 400);
 		frame.add(splitPane);
-		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
-
+	
+	public void showMessage(String msg) {
+		JOptionPane.showMessageDialog(frame,msg);
+	}
+	
 	public JTextField getSenderTextField() {
 		return senderTextField;
 	}
@@ -110,6 +131,13 @@ public class View {
 	public void setTable(JTable table) {
 		this.table = table;
 	}
-	
+
+	public JScrollPane getTableScrollPane() {
+		return tableScrollPane;
+	}
+
+	public void setTableScrollPane(JScrollPane tableScrollPane) {
+		this.tableScrollPane = tableScrollPane;
+	}
 	
 }
